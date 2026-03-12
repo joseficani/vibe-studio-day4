@@ -1,12 +1,14 @@
+import Link from "next/link";
+
 export default function Logo() {
   return (
-    <div className="flex items-center">
-      <div className="w-24 h-24 rounded-full border-2 border-white flex items-center justify-center">
+    <Link href="/" className="flex items-center">
+      <div className="flex h-24 w-24 items-center justify-center rounded-full border-2 border-white">
         <div className="text-center leading-tight">
-          <p className="text-white text-xl font-bold lowercase">Vibe</p>
-          <p className="text-white text-xl font-bold lowercase">studio</p>
+          <p className="text-xl font-bold text-white">vibe</p>
+          <p className="text-xl font-bold text-white">studio</p>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

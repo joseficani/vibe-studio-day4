@@ -54,47 +54,45 @@ const projects = [
 export default function WorkGrid() {
   return (
     <section id="work" className="bg-black py-24">
-      <div className="mx-auto max-w-[1100px] px-6">
+      <div className="container mx-auto px-8 md:px-12 xl:px-16">
+        <div className="mx-auto max-w-[1100px]">
+          <div className="grid grid-cols-1 gap-x-10 gap-y-20 lg:grid-cols-2">
+            {projects.map((project) => (
+              <article key={project.id}>
+                <div className="relative h-[260px] w-full overflow-hidden bg-neutral-900 sm:h-[320px] md:h-[360px]">
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover transition duration-500 hover:scale-105"
+                  />
+                </div>
 
-        <div className="grid grid-cols-1 gap-y-20 gap-x-10 lg:grid-cols-2">
-          {projects.map((project) => (
-            <article key={project.id}>
-              <div className="relative h-[260px] w-full overflow-hidden bg-neutral-900 sm:h-[320px] md:h-[360px]">
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  className="object-cover transition duration-500 hover:scale-105"
-                />
-              </div>
+                <h3 className="mt-4 text-[22px] font-bold text-white">
+                  {project.title}
+                </h3>
 
-              <h3 className="mt-4 text-[22px] font-bold text-white">
-                {project.title}
-              </h3>
-
-              <p className="mt-3 text-[15px] text-white/80">
-                {project.description}
-              </p>
-            </article>
-          ))}
-        </div>
-
-        <div className="mt-24 flex flex-col items-center text-center">
-
-          <div className="mb-6 flex items-center gap-3">
-            <span className="h-[4px] w-[40px] rounded-full bg-cyan-400"></span>
-            <span className="h-[4px] w-[25px] rounded-full bg-red-400"></span>
-            <span className="h-[4px] w-[80px] rounded-full bg-cyan-400"></span>
+                <p className="mt-3 text-[15px] text-white/80">
+                  {project.description}
+                </p>
+              </article>
+            ))}
           </div>
 
-          <p className="text-[26px] leading-relaxed text-white">
-            <span className="font-semibold text-red-400">we’d love</span> to see your project
-            <br />
-            added here.
-          </p>
+          <div className="mt-24 flex flex-col items-center text-center">
+            <div className="mb-6 flex items-center gap-3">
+              <span className="h-1 w-[40px] rounded-full bg-cyan-400"></span>
+              <span className="h-1 w-[25px] rounded-full bg-red-400"></span>
+              <span className="h-1 w-[80px] rounded-full bg-cyan-400"></span>
+            </div>
 
+            <p className="text-[26px] leading-relaxed text-white">
+              <span className="font-semibold text-red-400">we’d love</span> to see your project
+              <br />
+              added here.
+            </p>
+          </div>
         </div>
-
       </div>
     </section>
   );

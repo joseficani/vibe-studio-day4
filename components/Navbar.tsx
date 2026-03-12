@@ -10,44 +10,39 @@ const links = [
 
 export default function Navbar() {
   return (
-    <header className="absolute top-0 left-0 w-full z-50">
-      <div className="mx-auto max-w-[1600px] flex justify-between items-start px-8 pt-8 md:px-12 xl:px-16">
-
+    <header className="w-full bg-black">
+      <div className="container mx-auto flex items-start justify-between px-8 pt-8 md:px-12 xl:px-16">
         <Logo />
 
-        <div className="hidden lg:flex items-center gap-10 pt-6">
-
+        <div className="hidden items-center gap-10 pt-6 lg:flex">
           <nav className="flex items-center gap-10">
             {links.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
-                className="relative group text-[20px] font-semibold lowercase text-gray-400 hover:text-white transition"
+                className="group relative text-[20px] font-semibold lowercase text-gray-400 transition hover:text-white"
               >
                 {link.label}
-
-                <span className="absolute left-1/2 -translate-x-1/2 top-[38px] h-[4px] w-0 bg-cyan-400 rounded-full transition-all duration-300 group-hover:w-[42px]" />
+                <span className="absolute left-1/2 top-[38px] h-1 w-0 -translate-x-1/2 rounded-full bg-cyan-400 transition-all duration-300 group-hover:w-[42px]" />
               </a>
             ))}
           </nav>
 
-          <div className="flex items-center border border-white rounded-full p-[3px]">
-            <button className="w-8 h-8 flex items-center justify-center bg-black text-white text-[13px] font-semibold rounded-full">
+          <div className="flex items-center rounded-full border border-white p-[3px]">
+            <button className="flex h-8 w-8 items-center justify-center rounded-full bg-black text-[13px] font-semibold text-white">
               FR
             </button>
-            <button className="w-8 h-8 flex items-center justify-center bg-white text-black text-[13px] font-semibold rounded-full">
+            <button className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[13px] font-semibold text-black">
               EN
             </button>
           </div>
-
         </div>
 
-        <button className="flex flex-col gap-[5px] mt-5 lg:hidden">
-          <span className="w-7 h-[2px] bg-white"></span>
-          <span className="w-7 h-[2px] bg-white"></span>
-          <span className="w-7 h-[2px] bg-white"></span>
+        <button className="mt-5 flex flex-col gap-[5px] lg:hidden" aria-label="Open menu">
+          <span className="h-[2px] w-7 bg-white"></span>
+          <span className="h-[2px] w-7 bg-white"></span>
+          <span className="h-[2px] w-7 bg-white"></span>
         </button>
-
       </div>
     </header>
   );
