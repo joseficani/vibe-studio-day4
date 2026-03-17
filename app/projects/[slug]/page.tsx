@@ -13,17 +13,19 @@ export default async function ProjectPage({
 
   const data = await res.json();
   const projects = data.success ? data.data : [];
-  const project = projects.find(
+
+  const currentIndex = projects.findIndex(
     (item: any) => String(item.id) === slug
   );
+
+  const project = currentIndex !== -1 ? projects[currentIndex] : null;
 
   if (!project) {
     return (
       <section className="min-h-screen bg-black px-8 py-20 text-white">
         <div className="container mx-auto">
-          <div className="mx-auto max-w-[1100px]">
+          <div className="mx-auto max-w-[1200px]">
             <h1 className="text-3xl font-bold">Project not found</h1>
-
             <Link href="/" className="mt-6 inline-block underline">
               Back to home
             </Link>
@@ -32,10 +34,13 @@ export default async function ProjectPage({
       </section>
     );
   }
+
+  const previousProject = currentIndex > 0 ? projects[currentIndex - 1] : null;
+  const nextProject =
+    currentIndex < projects.length - 1 ? projects[currentIndex + 1] : null;
+
   const paragraph =
-    project.description ||
-    project.text ||
-    "No description available.";
+    project.description || project.text || "No description available.";
 
   return (
     <section className="min-h-screen bg-black px-8 py-20 text-white">
@@ -43,13 +48,25 @@ export default async function ProjectPage({
         <div className="mx-auto max-w-[1400px]">
           <Link
             href="/"
-            className="mb-12 inline-block text-sm text-white/70 hover:text-white"
+            className="mb-10 inline-block text-sm text-white/70 hover:text-white"
           >
             ← Back
           </Link>
+
+          {project.image && (
+            <div className="mb-16 overflow-hidden">
+              <img
+                src={project.image}
+                alt={project.title}
+                className="w-full object-cover"
+              />
+            </div>
+          )}
+
           <h1 className="mb-16 text-center text-[28px] font-light md:text-[40px]">
             {project.title}
           </h1>
+
           <div className="grid gap-16 lg:grid-cols-2">
             <div className="max-w-[700px]">
               <div className="mb-10 h-[4px] w-20 bg-white"></div>
@@ -58,8 +75,8 @@ export default async function ProjectPage({
                 {paragraph}
               </p>
             </div>
-            <div>
 
+            <div>
               <div className="border-b border-white/10 py-6">
                 <p className="text-[18px] uppercase tracking-wide">
                   CLIENT:{" "}
@@ -95,19 +112,32 @@ export default async function ProjectPage({
                   </span>
                 </p>
               </div>
-
             </div>
           </div>
-          {project.image && (
-            <div className="mt-16">
-              <img
-                src={project.image}
-                alt={project.title}
-                className="w-full object-cover"
-              />
-            </div>
-          )}
 
+          <div className="mt-20 flex items-center justify-between">
+            {previousProject ? (
+              <Link
+                href={`/projects/${previousProject.id}`}
+                className="rounded border border-white px-6 py-3 text-sm hover:bg-white hover:text-black"
+              >
+                ← Previous
+              </Link>
+            ) : (
+              <div></div>
+            )}
+
+            {nextProject ? (
+              <Link
+                href={`/projects/${nextProject.id}`}
+                className="rounded border border-white px-6 py-3 text-sm hover:bg-white hover:text-black"
+              >
+                Next →
+              </Link>
+            ) : (
+              <div></div>
+            )}
+          </div>
         </div>
       </div>
     </section>
