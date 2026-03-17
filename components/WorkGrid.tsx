@@ -115,43 +115,46 @@ export default function WorkGrid() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchProjects() {
+    async function getProjects() {
       try {
         const res = await fetch("https://hanzo.dxpshift.com/api/projects");
         const data = await res.json();
 
         if (data.success) {
-          const list: Project[] = data.data.slice(0, 8).map((item: any) => {
-            return {
-              id: item.id,
-              title: item.title,
-              image: item.image,
-              description: item.description || item.text || "No description",
-            };
-          });
+          const items = data.data.slice(0, 8).map((item: any) => ({
+            id: item.id,
+            title: item.title,
+            image: item.image,
+            description: item.description || item.text || "No description",
+          }));
 
-          setProjects(list);
+          setProjects(items);
         }
       } catch (error) {
-        console.log("error fetching projects", error);
+        console.log("Error fetching projects:", error);
+      } finally {
+        setLoading(false);
       }
-
-      setLoading(false);
     }
 
-    fetchProjects();
+    getProjects();
   }, []);
 
   return (
     <section id="work" className="bg-black py-24">
       <div className="container mx-auto px-8">
         <div className="mx-auto max-w-[1100px]">
-          {loading ? (
-            <p className="text-center text-white">Loading...</p>
-          ) : (
-            <>
-              <div className="grid gap-x-10 gap-y-20 lg:grid-cols-2">
-                {projects.map((project) => (
+          <div className="grid gap-x-10 gap-y-20 lg:grid-cols-2">
+            {loading
+              ? Array.from({ length: 8 }).map((_, index) => (
+                  <div key={index} className="animate-pulse">
+                    <div className="h-[260px] bg-gray-800 sm:h-[320px] md:h-[360px]"></div>
+                    <div className="mt-4 h-6 w-2/3 rounded bg-gray-800"></div>
+                    <div className="mt-3 h-4 w-full rounded bg-gray-800"></div>
+                    <div className="mt-2 h-4 w-5/6 rounded bg-gray-800"></div>
+                  </div>
+                ))
+              : projects.map((project) => (
                   <div key={project.id}>
                     <div className="h-[260px] overflow-hidden bg-gray-800 sm:h-[320px] md:h-[360px]">
                       <img
@@ -170,22 +173,22 @@ export default function WorkGrid() {
                     </p>
                   </div>
                 ))}
+          </div>
+
+          {!loading && (
+            <div className="mt-24 text-center">
+              <div className="mb-6 flex justify-center gap-3">
+                <span className="h-1 w-[40px] rounded-full bg-cyan-400"></span>
+                <span className="h-1 w-[25px] rounded-full bg-red-400"></span>
+                <span className="h-1 w-[80px] rounded-full bg-cyan-400"></span>
               </div>
 
-              <div className="mt-24 text-center">
-                <div className="mb-6 flex justify-center gap-3">
-                  <span className="h-1 w-[40px] rounded-full bg-cyan-400"></span>
-                  <span className="h-1 w-[25px] rounded-full bg-red-400"></span>
-                  <span className="h-1 w-[80px] rounded-full bg-cyan-400"></span>
-                </div>
-
-                <p className="text-[26px] text-white">
-                  <span className="font-semibold text-red-400">we’d love</span> to see your project
-                  <br />
-                  added here.
-                </p>
-              </div>
-            </>
+              <p className="text-[26px] text-white">
+                <span className="font-semibold text-red-400">we’d love</span> to see your project
+                <br />
+                added here.
+              </p>
+            </div>
           )}
         </div>
       </div>
