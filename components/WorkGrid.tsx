@@ -99,8 +99,11 @@
 // }
 
 // Dynamic website now 
+
+
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 type Project = {
@@ -155,23 +158,29 @@ export default function WorkGrid() {
                   </div>
                 ))
               : projects.map((project) => (
-                  <div key={project.id}>
-                    <div className="h-[260px] overflow-hidden bg-gray-800 sm:h-[320px] md:h-[360px]">
-                      <img
-                        src={project.image}
-                        alt={project.title}
-                        className="h-full w-full object-cover transition hover:scale-105"
-                      />
+                  <Link
+                    key={project.id}
+                    href={`/projects/${project.id}`}
+                    className="block"
+                  >
+                    <div>
+                      <div className="h-[260px] overflow-hidden bg-gray-800 sm:h-[320px] md:h-[360px]">
+                        <img
+                          src={project.image}
+                          alt={project.title}
+                          className="h-full w-full object-cover transition duration-500 hover:scale-105"
+                        />
+                      </div>
+
+                      <h3 className="mt-4 text-[22px] font-bold text-white">
+                        {project.title}
+                      </h3>
+
+                      <p className="mt-3 text-[15px] text-white/80">
+                        {project.description}
+                      </p>
                     </div>
-
-                    <h3 className="mt-4 text-[22px] font-bold text-white">
-                      {project.title}
-                    </h3>
-
-                    <p className="mt-3 text-[15px] text-white/80">
-                      {project.description}
-                    </p>
-                  </div>
+                  </Link>
                 ))}
           </div>
 
