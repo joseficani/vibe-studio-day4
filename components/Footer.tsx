@@ -2,8 +2,35 @@
 
 import Link from "next/link";
 import { Instagram, Linkedin } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function Footer() {
+  const [instagramLink, setInstagramLink] = useState("https://instagram.com");
+  const [linkedinLink, setLinkedinLink] = useState("https://linkedin.com");
+
+  useEffect(() => {
+    async function getSettings() {
+      try {
+        const res = await fetch("https://hanzo.dxpshift.com/api/settings");
+        const data = await res.json();
+
+        const socialMedia = data?.data?.social_media?.en;
+
+        if (socialMedia?.Instagram) {
+          setInstagramLink(socialMedia.Instagram);
+        }
+
+        if (socialMedia?.Linkedin) {
+          setLinkedinLink(socialMedia.Linkedin);
+        }
+      } catch (error) {
+        console.log("Error fetching footer links:", error);
+      }
+    }
+
+    getSettings();
+  }, []);
+
   return (
     <footer className="bg-[#ff3b44] px-8 py-16 text-white md:px-12 xl:px-16">
       <div className="container mx-auto">
@@ -18,22 +45,22 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="#work" className="hover:underline">
+                  <Link href="/#work" className="hover:underline">
                     our work
                   </Link>
                 </li>
                 <li>
-                  <Link href="#clients" className="hover:underline">
+                  <Link href="/#clients" className="hover:underline">
                     our clients
                   </Link>
                 </li>
                 <li>
-                  <Link href="#team" className="hover:underline">
+                  <Link href="/#team" className="hover:underline">
                     our team
                   </Link>
                 </li>
                 <li>
-                  <Link href="#contact" className="hover:underline">
+                  <Link href="/#contact" className="hover:underline">
                     contact us
                   </Link>
                 </li>
@@ -67,13 +94,23 @@ export default function Footer() {
 
               <div className="h-5 w-px bg-white"></div>
 
-              <Link href="https://instagram.com" target="_blank" aria-label="Instagram">
+              <a
+                href={instagramLink}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Instagram"
+              >
                 <Instagram size={20} />
-              </Link>
+              </a>
 
-              <Link href="https://linkedin.com" target="_blank" aria-label="LinkedIn">
+              <a
+                href={linkedinLink}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="LinkedIn"
+              >
                 <Linkedin size={20} />
-              </Link>
+              </a>
             </div>
 
             <div className="flex items-center gap-4 text-[13px]">
