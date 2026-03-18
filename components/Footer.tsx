@@ -13,7 +13,7 @@ export default function Footer() {
               <h3 className="mb-5 text-base font-medium">sitemap</h3>
               <ul className="space-y-2 text-[15px]">
                 <li>
-                  <Link href="#about" className="hover:underline">
+                  <Link href="/about" className="hover:underline">
                     about us
                   </Link>
                 </li>
