@@ -9,6 +9,8 @@ import "swiper/css";
 export default function NewsPage() {
   const [news, setNews] = useState<any[]>([]);
   const [currentSlide, setCurrentSlide] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [slidesPerView, setSlidesPerView] = useState(1);
   const swiperRef = useRef<any>(null);
 
   useEffect(() => {
@@ -16,7 +18,9 @@ export default function NewsPage() {
       try {
         const res = await fetch("https://hanzo.dxpshift.com/api/page/news");
         const data = await res.json();
+
         const sections = data.data.sections;
+
         const newsItems = sections.filter(
           (item: any) => item.section_type === "image"
         );
@@ -30,7 +34,7 @@ export default function NewsPage() {
     getNews();
   }, []);
 
-  const totalSlides = news.length;
+  const totalPages = Math.ceil(news.length / slidesPerView);
 
   return (
     <>
@@ -45,9 +49,23 @@ export default function NewsPage() {
             slidesPerView={1}
             onSwiper={(swiper) => {
               swiperRef.current = swiper;
+              const value = swiper.params.slidesPerView;
+              setSlidesPerView(typeof value === "number" ? value : 1);
+              setCurrentSlide(swiper.realIndex + 1);
+              setCurrentPage(1);
+            }}
+            onBreakpoint={(swiper) => {
+              const value = swiper.params.slidesPerView;
+              const currentValue = typeof value === "number" ? value : 1;
+              setSlidesPerView(currentValue);
+              setCurrentPage(Math.floor(swiper.realIndex / currentValue) + 1);
             }}
             onSlideChange={(swiper) => {
               setCurrentSlide(swiper.realIndex + 1);
+
+              const value = swiper.params.slidesPerView;
+              const currentValue = typeof value === "number" ? value : 1;
+              setCurrentPage(Math.floor(swiper.realIndex / currentValue) + 1);
             }}
             breakpoints={{
               768: {
@@ -67,30 +85,31 @@ export default function NewsPage() {
                     className="h-[250px] w-full object-cover"
                   />
 
-                  <div className="flex flex-1 flex-col p-6">
-                    <h2 className="min-h-[135px] text-[18px] font-semibold leading-9">
-                      {item.title}
-                    </h2>
+                  <div className="flex flex-1 flex-col justify-between p-6">
+                    <div>
+                      <h2 className="text-[18px] font-semibold leading-9">
+                        {item.title}
+                      </h2>
 
-                    <p className="mt-3 text-sm text-gray-400">
-                      {item.details.cta_text}
-                    </p>
+                      <p className="mt-3 text-sm text-gray-400">
+                        {item.details.cta_text}
+                      </p>
 
-                    <div className="mt-5 min-h-[110px] text-sm leading-7 text-gray-300">
-                      {item.details.text ? (
+                      {item.details.text && (
                         <div
+                          className="mt-5 text-sm leading-7 text-gray-300"
                           dangerouslySetInnerHTML={{
                             __html: item.details.text,
                           }}
                         />
-                      ) : null}
+                      )}
                     </div>
 
                     <a
                       href={item.details.cta_link}
                       target="_blank"
                       rel="noreferrer"
-                      className="mt-auto inline-block pt-6 text-cyan-400"
+                      className="mt-6 inline-block text-cyan-400"
                     >
                       Read more →
                     </a>
@@ -111,22 +130,23 @@ export default function NewsPage() {
 
               <div className="flex flex-1 items-center gap-4">
                 <span className="w-[50px] text-[48px] font-light leading-none text-[#0b4568]">
-                  {String(currentSlide).padStart(2, "0")}
+                  {String(currentPage).padStart(2, "0")}
                 </span>
 
                 <div className="h-[4px] flex-1 bg-gray-300/50">
                   <div
                     className="h-full bg-cyan-400 transition-all duration-300"
                     style={{
-                      width: `${(currentSlide / totalSlides) * 100}%`,
+                      width: `${(currentPage / totalPages) * 100}%`,
                     }}
                   ></div>
                 </div>
 
                 <span className="w-[50px] text-right text-[48px] font-light leading-none text-[#0b4568]">
-                  {String(totalSlides).padStart(2, "0")}
+                  {String(totalPages).padStart(2, "0")}
                 </span>
               </div>
+
               <button
                 onClick={() => swiperRef.current?.slideNext()}
                 className="text-[42px] leading-none text-cyan-400"
