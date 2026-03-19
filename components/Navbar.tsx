@@ -10,6 +10,7 @@ const links = [
   { label: "our clients", href: "/#clients" },
   { label: "our team", href: "/#team" },
   { label: "contact us", href: "/contact" },
+   { label: "media", href: "/media" },
 ];
 
 export default function Navbar() {
