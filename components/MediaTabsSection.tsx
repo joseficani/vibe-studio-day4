@@ -5,40 +5,40 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { ChevronDown, Play, X } from "lucide-react";
 import "swiper/css";
 
-const sayingSlides = [
+const reviewSlides = [
   {
     id: 1,
     stars: "★★★★★",
     count: "(850)",
-    text: "Our chefs value consistency, and NAQUA delivers every time. The freshness and quality of their seafood truly stand out compared to other suppliers.",
+    text: "Our chefs value consistency, and these products deliver every time. The freshness and quality truly stand out compared to other suppliers.",
     author: "-Lorem Ipsum",
   },
   {
     id: 2,
     stars: "★★★★★",
     count: "(850)",
-    text: "Working with NAQUA has elevated our seafood offering. Customers recognize the premium quality, and we appreciate the strong support from their team.",
+    text: "Working with this brand has elevated our seafood offering. Customers recognize the premium quality, and we appreciate the strong support from the team.",
     author: "-Lorem Ipsum",
   },
   {
     id: 3,
     stars: "★★★★★",
     count: "(850)",
-    text: "NAQUA's commitment to sustainability and quality is unmatched. Our restaurant has built a loyal customer base thanks to their exceptional products.",
+    text: "The commitment to sustainability and quality is unmatched. Our restaurant has built a loyal customer base thanks to these exceptional products.",
     author: "-Lorem Ipsum",
   },
   {
     id: 4,
     stars: "★★★★★",
     count: "(850)",
-    text: "From farm to table, NAQUA ensures the best. Their transparency and dedication make them our preferred seafood partner.",
+    text: "From farm to table, everything feels reliable and premium. The transparency and dedication make this our preferred seafood partner.",
     author: "-Lorem Ipsum",
   },
   {
     id: 5,
     stars: "★★★★★",
     count: "(850)",
-    text: "The consistency in taste and texture from NAQUA products has transformed our menu. We couldn't be happier with our partnership.",
+    text: "The consistency in taste and texture has transformed our menu. We could not be happier with this partnership.",
     author: "-Lorem Ipsum",
   },
   {
@@ -57,7 +57,7 @@ const sayingSlides = [
   },
 ];
 
-const cookingSlides = [
+const recipeSlides = [
   {
     id: 1,
     image:
@@ -108,8 +108,15 @@ const cookingSlides = [
   },
 ];
 
-function formatNumber(number: number) {
-  return String(number).padStart(2, "0");
+function formatNumber(value: number) {
+  return String(value).padStart(2, "0");
+}
+
+function getWrappedNumber(value: number, total: number) {
+  let result = value;
+  while (result > total) result -= total;
+  while (result < 1) result += total;
+  return result;
 }
 
 function Pagination({
@@ -133,7 +140,7 @@ function Pagination({
         ‹
       </button>
 
-      <span className="w-[50px] text-right text-[36px] font-light leading-none text-[#0c4f70]">
+      <span className="w-[54px] text-right text-[36px] font-light leading-none text-[#0c4f70]">
         {formatNumber(current)}
       </span>
 
@@ -144,7 +151,7 @@ function Pagination({
         />
       </div>
 
-      <span className="w-[50px] text-[36px] font-light leading-none text-[#0c4f70]">
+      <span className="w-[54px] text-[36px] font-light leading-none text-[#0c4f70]">
         {formatNumber(total)}
       </span>
 
@@ -161,17 +168,17 @@ function Pagination({
 
 function VideoModal({
   video,
-  closeVideo,
+  onClose,
 }: {
   video: string;
-  closeVideo: () => void;
+  onClose: () => void;
 }) {
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 px-6">
       <div className="relative w-full max-w-[900px] rounded-[20px] bg-black p-4">
         <button
           type="button"
-          onClick={closeVideo}
+          onClick={onClose}
           className="absolute right-3 top-3 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white"
         >
           <X size={20} />
@@ -189,115 +196,119 @@ function VideoModal({
 }
 
 export default function MediaTabsSection() {
-  const [activeTab, setActiveTab] = useState("saying");
-  const [activeSaying, setActiveSaying] = useState(1);
-  const [activeCooking, setActiveCooking] = useState(1);
+  const [activeTab, setActiveTab] = useState<"reviews" | "recipes">("reviews");
+  const [activeReview, setActiveReview] = useState(3);
+  const [activeRecipe, setActiveRecipe] = useState(2);
   const [video, setVideo] = useState("");
 
-  const sayingSwiperRef = useRef<any>(null);
-  const cookingSwiperRef = useRef<any>(null);
+  const reviewSwiperRef = useRef<any>(null);
+  const recipeSwiperRef = useRef<any>(null);
 
   return (
     <section className="bg-[#dbe5e9] px-6 py-16 md:px-10">
-      <div className="mx-auto max-w-[1500px]">
-        <div className="mx-auto mb-16 flex w-full max-w-[760px] overflow-hidden rounded-[14px]">
+      <div className="mx-auto max-w-[1600px]">
+        <div className="mx-auto mb-16 flex w-full max-w-[820px] overflow-hidden rounded-[14px]">
           <button
             type="button"
-            onClick={() => setActiveTab("saying")}
-            className={`flex flex-1 items-center justify-between px-6 py-5 text-left text-[19px] font-semibold leading-7 ${
-              activeTab === "saying"
+            onClick={() => setActiveTab("reviews")}
+            className={`flex flex-1 items-center justify-between px-7 py-5 text-left text-[19px] font-semibold leading-7 ${
+              activeTab === "reviews"
                 ? "bg-[#1bcfcd] text-white"
                 : "bg-[#07546d] text-white"
             }`}
           >
-            <span>What others are saying about Naqua</span>
-            {activeTab === "saying" && <ChevronDown size={24} />}
+            <span>What others are saying about Blue Wave</span>
+            {activeTab === "reviews" && <ChevronDown size={24} />}
           </button>
 
           <button
             type="button"
-            onClick={() => setActiveTab("cooking")}
-            className={`flex flex-1 items-center justify-between px-6 py-5 text-left text-[19px] font-semibold leading-7 ${
-              activeTab === "cooking"
+            onClick={() => setActiveTab("recipes")}
+            className={`flex flex-1 items-center justify-between px-7 py-5 text-left text-[19px] font-semibold leading-7 ${
+              activeTab === "recipes"
                 ? "bg-[#1bcfcd] text-white"
                 : "bg-[#07546d] text-white"
             }`}
           >
-            <span>What others are cooking with Naqua</span>
-            {activeTab === "cooking" && <ChevronDown size={24} />}
+            <span>What others are cooking with Blue Wave</span>
+            {activeTab === "recipes" && <ChevronDown size={24} />}
           </button>
         </div>
 
-        {activeTab === "saying" && (
-          <div>
-            <Swiper
-              spaceBetween={14}
-              slidesPerView={1.2}
-              initialSlide={0}
-              onSwiper={(swiper) => {
-                sayingSwiperRef.current = swiper;
-                setActiveSaying(1);
-              }}
-              onSlideChange={(swiper) => {
-                setActiveSaying(swiper.activeIndex + 1);
-              }}
-              breakpoints={{
-                768: {
-                  slidesPerView: 3.2,
-                  spaceBetween: 14,
-                },
-                1200: {
-                  slidesPerView: 5.2,
-                  spaceBetween: 14,
-                },
-              }}
+       {activeTab === "reviews" && (
+  <div className="min-h-[620px]">
+    <Swiper
+      loop={true}
+      centeredSlides={true}
+      initialSlide={2}
+      slidesPerView={1.2}
+      spaceBetween={14}
+      onSwiper={(swiper) => {
+        reviewSwiperRef.current = swiper;
+        setActiveReview(swiper.realIndex + 1);
+      }}
+      onSlideChange={(swiper) => {
+        setActiveReview(swiper.realIndex + 1);
+      }}
+      breakpoints={{
+        768: {
+          slidesPerView: 3.2,
+          spaceBetween: 14,
+        },
+        1200: {
+          slidesPerView: 5,
+          spaceBetween: 14,
+        },
+      }}
+    >
+      {reviewSlides.map((item, index) => {
+        const isActive = activeReview === index + 1;
+
+        return (
+          <SwiperSlide key={item.id} className="!h-auto">
+            <div
+              className={`mx-auto flex flex-col justify-between rounded-[18px] px-6 py-8 transition-all duration-300 ${
+                isActive
+                  ? "h-[485px] max-w-[340px] bg-[#07546d] text-white"
+                  : "h-[380px] max-w-[280px] bg-[#f4f4f4] text-[#1b6f89]"
+              }`}
             >
-              {sayingSlides.map((item, index) => {
-                const isActive = activeSaying === index + 1;
+              <div>
+                <div className="mb-8 flex items-center gap-2 text-[14px]">
+                  <span className="tracking-[0.2em] text-[#16cfd0]">
+                    {item.stars}
+                  </span>
+                  <span className="text-[#16cfd0]">{item.count}</span>
+                </div>
 
-                return (
-                  <SwiperSlide key={item.id} className="!h-auto">
-                    <div
-                      className={`rounded-[18px] px-6 py-8 transition-all duration-300 ${
-                        isActive
-                          ? "min-h-[445px] bg-[#07546d] text-white"
-                          : "min-h-[355px] bg-[#f4f4f4] text-[#1b6f89]"
-                      }`}
-                    >
-                      <div className="mb-8 flex items-center gap-2 text-[14px]">
-                        <span className="tracking-[0.2em] text-[#16cfd0]">
-                          {item.stars}
-                        </span>
-                        <span className="text-[#16cfd0]">{item.count}</span>
-                      </div>
+                <p
+                  className={
+                    isActive
+                      ? "text-[21px] font-semibold leading-[1.55]"
+                      : "text-[18px] leading-[1.7]"
+                  }
+                >
+                  {item.text}
+                </p>
+              </div>
 
-                      <p
-                        className={`${
-                          isActive
-                            ? "text-[21px] font-semibold leading-[1.55]"
-                            : "text-[18px] leading-[1.7]"
-                        }`}
-                      >
-                        {item.text}
-                      </p>
+              <p className="font-semibold">{item.author}</p>
+            </div>
+          </SwiperSlide>
+        );
+      })}
+    </Swiper>
 
-                      <p className="mt-12 font-semibold">{item.author}</p>
-                    </div>
-                  </SwiperSlide>
-                );
-              })}
-            </Swiper>
+    <Pagination
+      current={activeReview}
+      total={reviewSlides.length}
+      onPrev={() => reviewSwiperRef.current?.slidePrev()}
+      onNext={() => reviewSwiperRef.current?.slideNext()}
+    />
+  </div>
+)}
 
-            <Pagination
-              current={activeSaying}
-              total={sayingSlides.length}
-              onPrev={() => sayingSwiperRef.current?.slidePrev()}
-              onNext={() => sayingSwiperRef.current?.slideNext()}
-            />
-          </div>
-        )}
-
-        {activeTab === "cooking" && (
+        {activeTab === "recipes" && (
           <div className="grid items-center gap-12 lg:grid-cols-[360px_minmax(0,1fr)]">
             <div className="hidden lg:block">
               <h2 className="text-[76px] font-bold uppercase leading-[0.9] tracking-[-0.04em] text-[#c6d5db]">
@@ -311,17 +322,22 @@ export default function MediaTabsSection() {
               </h2>
             </div>
 
-            <div>
+            <div className="min-h-[700px]">
               <Swiper
-                spaceBetween={18}
+                loop={true}
+                initialSlide={1}
                 slidesPerView={1.3}
-                initialSlide={0}
+                spaceBetween={18}
                 onSwiper={(swiper) => {
-                  cookingSwiperRef.current = swiper;
-                  setActiveCooking(1);
+                  recipeSwiperRef.current = swiper;
+                  setActiveRecipe(
+                    getWrappedNumber(swiper.realIndex + 2, recipeSlides.length)
+                  );
                 }}
                 onSlideChange={(swiper) => {
-                  setActiveCooking(swiper.activeIndex + 1);
+                  setActiveRecipe(
+                    getWrappedNumber(swiper.realIndex + 2, recipeSlides.length)
+                  );
                 }}
                 breakpoints={{
                   768: {
@@ -334,21 +350,21 @@ export default function MediaTabsSection() {
                   },
                 }}
               >
-                {cookingSlides.map((item, index) => {
-                  const isActive = activeCooking === index + 1;
+                {recipeSlides.map((item, index) => {
+                  const isActive = activeRecipe === index + 1;
 
                   return (
                     <SwiperSlide key={item.id} className="!h-auto">
                       <div
-                        className={`relative overflow-hidden rounded-[20px] transition-all duration-300 ${
+                        className={`relative mx-auto overflow-hidden rounded-[20px] transition-all duration-300 ${
                           isActive
-                            ? "h-[470px] scale-100 md:h-[560px]"
-                            : "h-[350px] scale-[0.93] md:h-[440px]"
+                            ? "h-[470px] max-w-[300px] md:h-[560px]"
+                            : "h-[350px] max-w-[240px] md:h-[440px]"
                         }`}
                       >
                         <img
                           src={item.image}
-                          alt={`Slide ${item.id}`}
+                          alt={`Recipe ${item.id}`}
                           className="h-full w-full object-cover"
                         />
 
@@ -381,17 +397,17 @@ export default function MediaTabsSection() {
               </div>
 
               <Pagination
-                current={activeCooking}
-                total={cookingSlides.length}
-                onPrev={() => cookingSwiperRef.current?.slidePrev()}
-                onNext={() => cookingSwiperRef.current?.slideNext()}
+                current={activeRecipe}
+                total={recipeSlides.length}
+                onPrev={() => recipeSwiperRef.current?.slidePrev()}
+                onNext={() => recipeSwiperRef.current?.slideNext()}
               />
             </div>
           </div>
         )}
       </div>
 
-      {video && <VideoModal video={video} closeVideo={() => setVideo("")} />}
+      {video && <VideoModal video={video} onClose={() => setVideo("")} />}
     </section>
   );
 }
