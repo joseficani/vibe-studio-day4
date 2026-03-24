@@ -68,10 +68,10 @@ export default function BrandsSection() {
                 />
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition" />
                 <div className="absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-[#58dbc9]/90 via-[#58dbc9]/50 to-transparent opacity-0 group-hover:opacity-100 transition" />
-                <div className="absolute inset-0 flex items-end p-6">
-                  <h3 className="translate-y-6 opacity-0 text-[28px] font-bold uppercase text-white transition group-hover:translate-y-0 group-hover:opacity-100">
+               <div className="absolute inset-0 flex items-end p-6">
+                <h3 className="max-w-[70%] pr-10 translate-y-6 opacity-0 text-[24px] md:text-[28px] font-bold uppercase text-white leading-tight transition group-hover:translate-y-0 group-hover:opacity-100">
                     {card.title}
-                  </h3>
+                </h3>
                 </div>
                 <div className="absolute bottom-6 right-6 h-12 w-12">
                   <span className="absolute bottom-0 left-0 h-[10px] w-[10px] bg-white" />
