@@ -88,7 +88,7 @@ export default function CompanyPage() {
                     key={item.id}
                     type="button"
                     onClick={() => handleScrollToSection(item.id)}
-                    className={`relative pb-3 text-[15px] font-bold uppercase tracking-[0.02em] transition-colors md:text-[17px] ${
+                    className={`relative cursor-pointer pb-3 text-[15px] font-bold uppercase tracking-[0.02em] transition-colors md:text-[17px] ${
                       isActive ? "text-[#18cfd0]" : "text-[#0c4f70]"
                     }`}
                   >

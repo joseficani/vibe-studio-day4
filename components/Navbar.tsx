@@ -18,7 +18,9 @@ export default function Navbar() {
   return (
     <header className="w-full bg-black">
       <div className="container mx-auto flex items-start justify-between px-8 pt-8 md:px-12 xl:px-16">
-        <Logo />
+      <div className="pt-2 pb-6">
+      <Logo />
+    </div>
 
         <div className="hidden items-center gap-10 pt-6 lg:flex">
           <nav className="flex items-center gap-10">
