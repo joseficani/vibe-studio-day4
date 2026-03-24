@@ -3,7 +3,12 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-type Project = {id: number;title: string;image: string; description: string;};
+type Project = {
+  id: number;
+  title: string;
+  image: string;
+  description: string;
+};
 
 export default function WorkGrid() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -50,13 +55,26 @@ export default function WorkGrid() {
       <div className="container mx-auto px-8">
         <div className="mx-auto max-w-[1100px]">
           <div className="mb-12">
-            <input
-              type="text"
-              placeholder="Search projects..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-md border border-white/20 bg-transparent px-5 py-4 text-white outline-none placeholder:text-white/50 focus:border-cyan-400"
-            />
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search projects..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full rounded-md border border-white/20 bg-transparent px-5 py-4 pr-14 text-white outline-none placeholder:text-white/50 focus:border-cyan-400"
+              />
+
+              {search && (
+                <button
+                  type="button"
+                  onClick={() => setSearch("")}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-white/70 transition hover:text-white"
+                  aria-label="Clear search"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
           </div>
 
           <div className="grid gap-x-10 gap-y-20 lg:grid-cols-2">
@@ -109,9 +127,9 @@ export default function WorkGrid() {
                 <span className="h-1 w-[25px] rounded-full bg-red-400"></span>
                 <span className="h-1 w-[80px] rounded-full bg-cyan-400"></span>
               </div>
+
               <p className="text-[26px] text-white">
-                <span className="font-semibold text-red-400">we’d love</span> to
-                see your project
+                <span className="font-semibold text-red-400">we’d love</span> to see your project
                 <br />
                 added here.
               </p>
