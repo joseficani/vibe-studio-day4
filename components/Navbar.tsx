@@ -8,9 +8,10 @@ const links = [
   { label: "our work", href: "/#work" },
   { label: "news", href: "/news" },
   { label: "our clients", href: "/#clients" },
-  { label: "our team", href: "/#team" },
+  // { label: "our team", href: "/#team" },
   { label: "contact us", href: "/contact" },
-   { label: "media", href: "/media" },
+  { label: "media", href: "/media" },
+  { label: "company", href: "/company" },
 ];
 
 export default function Navbar() {
@@ -18,13 +19,14 @@ export default function Navbar() {
     <header className="w-full bg-black">
       <div className="container mx-auto flex items-start justify-between px-8 pt-8 md:px-12 xl:px-16">
         <Logo />
+
         <div className="hidden items-center gap-10 pt-6 lg:flex">
           <nav className="flex items-center gap-10">
             {links.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
-                scroll={true} 
+                scroll={true}
                 className="group relative text-[20px] font-semibold lowercase text-gray-400 transition hover:text-white"
               >
                 {link.label}
@@ -32,6 +34,7 @@ export default function Navbar() {
               </Link>
             ))}
           </nav>
+
           <div className="flex items-center rounded-full border border-white p-[3px]">
             <button className="flex h-8 w-8 items-center justify-center rounded-full bg-black text-[13px] font-semibold text-white">
               FR
@@ -42,6 +45,7 @@ export default function Navbar() {
             </button>
           </div>
         </div>
+
         <button
           className="mt-5 flex flex-col gap-[5px] lg:hidden"
           aria-label="Open menu"
