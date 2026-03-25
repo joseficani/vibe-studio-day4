@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useGSAP } from "@gsap/react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import { initSlideUpAnimation } from "../utils/animations";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
@@ -11,7 +13,9 @@ export default function NewsPage() {
   const [currentSlide, setCurrentSlide] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [slidesPerView, setSlidesPerView] = useState(1);
+
   const swiperRef = useRef<any>(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     async function getNews() {
@@ -34,15 +38,24 @@ export default function NewsPage() {
     getNews();
   }, []);
 
+  useGSAP(
+    () => {
+      if (sectionRef.current) {
+        initSlideUpAnimation(sectionRef.current);
+      }
+    },
+    { scope: sectionRef, dependencies: [news] }
+  );
+
   const totalPages = Math.ceil(news.length / slidesPerView);
 
   return (
     <>
       <Navbar />
 
-      <section className="bg-black px-8 py-20 text-white">
+      <section ref={sectionRef} className="bg-black px-8 py-20 text-white">
         <div className="container mx-auto max-w-[1300px]">
-          <h1 className="mb-12 text-center text-3xl">LATEST NEWS</h1>
+          <h1 className="slideup mb-12 text-center text-3xl">LATEST NEWS</h1>
 
           <Swiper
             spaceBetween={30}
@@ -87,7 +100,7 @@ export default function NewsPage() {
 
                   <div className="flex flex-1 flex-col justify-between p-6">
                     <div>
-                      <h2 className="text-[18px] font-semibold leading-9">
+                      <h2 className="slideup text-[18px] font-semibold leading-9">
                         {item.title}
                       </h2>
 
@@ -109,7 +122,7 @@ export default function NewsPage() {
                       href={item.details.cta_link}
                       target="_blank"
                       rel="noreferrer"
-                      className="mt-6 inline-block text-cyan-400"
+                      className="slideup mt-6 inline-block text-cyan-400"
                     >
                       Read more →
                     </a>
