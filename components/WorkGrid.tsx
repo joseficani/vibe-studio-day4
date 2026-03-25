@@ -1,7 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 type Project = {
   id: number;
@@ -14,6 +19,7 @@ export default function WorkGrid() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const sectionRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     async function getProjects() {
@@ -41,6 +47,34 @@ export default function WorkGrid() {
     getProjects();
   }, []);
 
+  useGSAP(
+    () => {
+      if (loading) return;
+
+      gsap.utils.toArray<HTMLElement>(".work-card").forEach((card) => {
+        gsap.fromTo(
+          card,
+          {
+            y: 80,
+            opacity: 0,
+          },
+          {
+            y: 0,
+            opacity: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 88%",
+              end: "top 55%",
+              scrub: 1,
+            },
+          }
+        );
+      });
+    },
+    { scope: sectionRef, dependencies: [loading, projects] }
+  );
+
   const filteredProjects = projects.filter((project) => {
     const searchValue = search.toLowerCase();
 
@@ -51,7 +85,7 @@ export default function WorkGrid() {
   });
 
   return (
-    <section id="work" className="bg-black py-24">
+    <section ref={sectionRef} id="work" className="bg-black py-24">
       <div className="container mx-auto px-8">
         <div className="mx-auto max-w-[1100px]">
           <div className="mb-12">
@@ -92,7 +126,7 @@ export default function WorkGrid() {
                 <Link
                   key={project.id}
                   href={`/projects/${project.id}`}
-                  className="block"
+                  className="work-card block"
                 >
                   <div>
                     <div className="h-[260px] overflow-hidden bg-gray-800 sm:h-[320px] md:h-[360px]">
@@ -129,9 +163,10 @@ export default function WorkGrid() {
               </div>
 
               <p className="text-[26px] text-white">
-                <span className="font-semibold text-red-400">we’d love</span> to see your project
+                <span className="font-semibold text-red-400">we’d love</span> to
+                see your project
                 <br />
-                added here.
+                added here
               </p>
             </div>
           )}
