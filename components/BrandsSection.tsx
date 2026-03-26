@@ -192,22 +192,28 @@ export default function BrandsSection({ lang }: BrandsSectionProps) {
                 <div className="absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-[#58dbc9]/90 via-[#58dbc9]/50 to-transparent opacity-0 transition group-hover:opacity-100" />
 
                 <div className="absolute inset-0 flex items-end p-6">
-                    <h3
+                  <h3
                     className={`translate-y-6 text-[24px] font-bold uppercase leading-tight text-white opacity-0 transition group-hover:translate-y-0 group-hover:opacity-100 md:text-[28px] ${
-                        lang === "ar"
+                      lang === "ar"
                         ? "max-w-[48%] ml-20 mr-2 text-right"
                         : "max-w-[65%] pr-14 pl-2 text-left"
                     }`}
-                    >
+                  >
                     {card.title}
-                    </h3>
-
+                  </h3>
                 </div>
 
-                <div className="absolute bottom-6 right-6 h-12 w-12">
-                  <span className="absolute bottom-0 left-0 h-[10px] w-[10px] bg-white" />
-                  <span className="absolute right-[2px] top-[2px] h-[24px] w-[24px] border-r-[4px] border-t-[4px] border-white" />
-                </div>
+                {lang === "ar" ? (
+                  <div className="absolute bottom-6 left-6 h-12 w-12">
+                    <span className="absolute bottom-0 right-0 h-[10px] w-[10px] bg-white" />
+                    <span className="absolute left-[2px] top-[2px] h-[24px] w-[24px] border-l-[4px] border-t-[4px] border-white" />
+                  </div>
+                ) : (
+                  <div className="absolute bottom-6 right-6 h-12 w-12">
+                    <span className="absolute bottom-0 left-0 h-[10px] w-[10px] bg-white" />
+                    <span className="absolute right-[2px] top-[2px] h-[24px] w-[24px] border-r-[4px] border-t-[4px] border-white" />
+                  </div>
+                )}
               </div>
             </div>
           ))}
