@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -14,6 +14,7 @@ type BrandsSectionProps = {
 
 export default function BrandsSection({ lang }: BrandsSectionProps) {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const [activeCard, setActiveCard] = useState<number | null>(null);
 
   const brandCards =
     lang === "ar"
@@ -167,56 +168,83 @@ export default function BrandsSection({ lang }: BrandsSectionProps) {
         </div>
 
         <div className="brands-grid grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {brandCards.map((card) => (
-            <div
-              key={card.id}
-              className={`brand-card group relative overflow-hidden rounded-[26px] ${
-                card.large ? "md:row-span-2" : ""
-              }`}
-            >
+          {brandCards.map((card) => {
+            const isActive = activeCard === card.id;
+
+            return (
               <div
-                className={`relative w-full ${
-                  card.large
-                    ? "h-[380px] md:h-full md:min-h-[700px]"
-                    : "h-[300px] md:h-[340px]"
+                key={card.id}
+                className={`brand-card relative overflow-hidden rounded-[26px] ${
+                  card.large ? "md:row-span-2" : ""
                 }`}
+                onMouseEnter={() => setActiveCard(card.id)}
+                onMouseLeave={() => setActiveCard(null)}
+                onClick={() => setActiveCard((prev) => (prev === card.id ? null : card.id))}
+                onTouchStart={() =>
+                  setActiveCard((prev) => (prev === card.id ? null : card.id))
+                }
               >
-                <img
-                  src={card.image}
-                  alt={card.title}
-                  className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                />
-
-                <div className="absolute inset-0 bg-black/10 transition group-hover:bg-black/20" />
-
-                <div className="absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-[#58dbc9]/90 via-[#58dbc9]/50 to-transparent opacity-0 transition group-hover:opacity-100" />
-
-                <div className="absolute inset-0 flex items-end p-6">
-                  <h3
-                    className={`translate-y-6 text-[24px] font-bold uppercase leading-tight text-white opacity-0 transition group-hover:translate-y-0 group-hover:opacity-100 md:text-[28px] ${
-                      lang === "ar"
-                        ? "max-w-[48%] ml-20 mr-2 text-right"
-                        : "max-w-[65%] pr-14 pl-2 text-left"
+                <div
+                  className={`relative w-full ${
+                    card.large
+                      ? "h-[380px] md:h-full md:min-h-[700px]"
+                      : "h-[300px] md:h-[340px]"
+                  }`}
+                >
+                  <img
+                    src={card.image}
+                    alt={card.title}
+                    className={`h-full w-full object-cover transition duration-500 ${
+                      isActive ? "scale-105" : "scale-100"
                     }`}
-                  >
-                    {card.title}
-                  </h3>
-                </div>
+                  />
 
-                {lang === "ar" ? (
-                  <div className="absolute bottom-6 left-6 h-12 w-12">
-                    <span className="absolute bottom-0 right-0 h-[10px] w-[10px] bg-white" />
-                    <span className="absolute left-[2px] top-[2px] h-[24px] w-[24px] border-l-[4px] border-t-[4px] border-white" />
+                  <div
+                    className={`absolute inset-0 transition ${
+                      isActive ? "bg-black/30" : "bg-black/10"
+                    }`}
+                  />
+
+                  <div
+                    className={`absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-[#58dbc9]/90 via-[#58dbc9]/50 to-transparent transition ${
+                      isActive ? "opacity-100" : "opacity-0"
+                    }`}
+                  />
+
+                  <div className="absolute inset-0 flex items-end p-6">
+                    <h3
+                      className={`font-bold uppercase leading-tight text-white transition duration-300
+                        text-[22px] md:text-[22px] lg:text-[24px] xl:text-[28px]
+                        ${
+                          isActive
+                            ? "translate-y-0 opacity-100"
+                            : "translate-y-6 opacity-0"
+                        }
+                        ${
+                          lang === "ar"
+                            ? "text-right max-w-[45%] ml-14 mr-2"
+                            : "text-left max-w-[60%] pr-12 pl-2"
+                        }`}
+                    >
+                      {card.title}
+                    </h3>
                   </div>
-                ) : (
-                  <div className="absolute bottom-6 right-6 h-12 w-12">
-                    <span className="absolute bottom-0 left-0 h-[10px] w-[10px] bg-white" />
-                    <span className="absolute right-[2px] top-[2px] h-[24px] w-[24px] border-r-[4px] border-t-[4px] border-white" />
-                  </div>
-                )}
+
+                  {lang === "ar" ? (
+                    <div className="absolute bottom-6 left-6 h-12 w-12">
+                      <span className="absolute bottom-0 right-0 h-[10px] w-[10px] bg-white" />
+                      <span className="absolute left-[2px] top-[2px] h-[24px] w-[24px] border-l-[4px] border-t-[4px] border-white" />
+                    </div>
+                  ) : (
+                    <div className="absolute bottom-6 right-6 h-12 w-12">
+                      <span className="absolute bottom-0 left-0 h-[10px] w-[10px] bg-white" />
+                      <span className="absolute right-[2px] top-[2px] h-[24px] w-[24px] border-r-[4px] border-t-[4px] border-white" />
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
