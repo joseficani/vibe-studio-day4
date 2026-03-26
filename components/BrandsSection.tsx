@@ -4,101 +4,165 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import type { Language } from "../app/page";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-const brandCards = [
-  {
-    id: 1,
-    title: "Fresh seafood selection",
-    image: "/images/cards1.jpg",
-    large: false,
-  },
-  {
-    id: 2,
-    title: "Premium quality products",
-    image: "/images/cards2.jpg",
-    large: false,
-  },
-  {
-    id: 3,
-    title: "Best burgers in town",
-    image: "/images/cards3.jpg",
-    large: true,
-  },
-  {
-    id: 4,
-    title: "Carefully prepared items",
-    image: "/images/cards4.jpg",
-    large: false,
-  },
-  {
-    id: 5,
-    title: "Trusted by professionals",
-    image: "/images/cards5.jpg",
-    large: false,
-  },
-];
+type BrandsSectionProps = {
+  lang: Language;
+};
 
-export default function BrandsSection() {
+export default function BrandsSection({ lang }: BrandsSectionProps) {
   const sectionRef = useRef<HTMLElement | null>(null);
+
+  const brandCards =
+    lang === "ar"
+      ? [
+          {
+            id: 1,
+            title: "تشكيلة مأكولات بحرية طازجة",
+            image: "/images/cards1.jpg",
+            large: false,
+          },
+          {
+            id: 2,
+            title: "منتجات بجودة عالية",
+            image: "/images/cards2.jpg",
+            large: false,
+          },
+          {
+            id: 3,
+            title: "أفضل برغر في المدينة",
+            image: "/images/cards3.jpg",
+            large: true,
+          },
+          {
+            id: 4,
+            title: "أطباق محضرة بعناية",
+            image: "/images/cards4.jpg",
+            large: false,
+          },
+          {
+            id: 5,
+            title: "موثوق من المحترفين",
+            image: "/images/cards5.jpg",
+            large: false,
+          },
+        ]
+      : [
+          {
+            id: 1,
+            title: "Fresh seafood selection",
+            image: "/images/cards1.jpg",
+            large: false,
+          },
+          {
+            id: 2,
+            title: "Premium quality products",
+            image: "/images/cards2.jpg",
+            large: false,
+          },
+          {
+            id: 3,
+            title: "Best burgers in town",
+            image: "/images/cards3.jpg",
+            large: true,
+          },
+          {
+            id: 4,
+            title: "Carefully prepared items",
+            image: "/images/cards4.jpg",
+            large: false,
+          },
+          {
+            id: 5,
+            title: "Trusted by professionals",
+            image: "/images/cards5.jpg",
+            large: false,
+          },
+        ];
 
   useGSAP(
     () => {
-      gsap.from(".brands-title", {
-        y: 30,
-        opacity: 0,
-        duration: 1,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: ".brands-title",
-          start: "top 85%",
-          toggleActions: "restart none none none",
-        },
-      });
+      const ctx = gsap.context(() => {
+        gsap.fromTo(
+          ".brands-title",
+          {
+            y: 30,
+            opacity: 0,
+          },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: ".brands-section",
+              start: "top 80%",
+              toggleActions: "restart none none none",
+            },
+          }
+        );
 
-      gsap.from(".brands-button", {
-        y: 30,
-        opacity: 0,
-        duration: 1,
-        delay: 0.1,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: ".brands-title",
-          start: "top 85%",
-          toggleActions: "restart none none none",
-        },
-      });
+        gsap.fromTo(
+          ".brands-button",
+          {
+            y: 30,
+            opacity: 0,
+          },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            delay: 0.1,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: ".brands-section",
+              start: "top 80%",
+              toggleActions: "restart none none none",
+            },
+          }
+        );
 
-      gsap.from(".brand-card", {
-        y: 50,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.2,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: ".brands-title",
-          start: "top 85%",
-          toggleActions: "restart none none none",
-        },
-      });
+        gsap.fromTo(
+          ".brand-card",
+          {
+            y: 60,
+            opacity: 0,
+          },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.9,
+            stagger: 0.2,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: ".brands-section",
+              start: "top 75%",
+              toggleActions: "restart none none none",
+            },
+          }
+        );
+      }, sectionRef);
+
+      return () => ctx.revert();
     },
-    { scope: sectionRef }
+    { scope: sectionRef, dependencies: [lang] }
   );
 
   return (
     <section
       ref={sectionRef}
-      className="bg-[#f5f6f7] px-6 py-16 md:px-10 md:py-20"
+      className="brands-section bg-[#f5f6f7] px-6 py-16 md:px-10 md:py-20"
     >
       <div className="mx-auto max-w-[1500px]">
         <div className="mb-10 flex items-center justify-between">
           <h2 className="brands-title text-[34px] font-bold text-[#0c4f70] md:text-[58px]">
-            Explore our new items
+            {lang === "ar" ? "اكتشف عناصرنا الجديدة" : "Explore our new items"}
           </h2>
 
           <button className="brands-button text-[14px] font-bold uppercase text-[#18cfd0] hover:text-[#0c4f70]">
-            Go to shop →
+            {lang === "ar" ? "اذهب إلى المتجر ←" : "Go to shop →"}
           </button>
         </div>
 
@@ -128,9 +192,16 @@ export default function BrandsSection() {
                 <div className="absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-[#58dbc9]/90 via-[#58dbc9]/50 to-transparent opacity-0 transition group-hover:opacity-100" />
 
                 <div className="absolute inset-0 flex items-end p-6">
-                  <h3 className="max-w-[70%] translate-y-6 pr-10 text-[24px] font-bold uppercase leading-tight text-white opacity-0 transition group-hover:translate-y-0 group-hover:opacity-100 md:text-[28px]">
+                    <h3
+                    className={`translate-y-6 text-[24px] font-bold uppercase leading-tight text-white opacity-0 transition group-hover:translate-y-0 group-hover:opacity-100 md:text-[28px] ${
+                        lang === "ar"
+                        ? "max-w-[48%] ml-20 mr-2 text-right"
+                        : "max-w-[65%] pr-14 pl-2 text-left"
+                    }`}
+                    >
                     {card.title}
-                  </h3>
+                    </h3>
+
                 </div>
 
                 <div className="absolute bottom-6 right-6 h-12 w-12">

@@ -3,19 +3,28 @@
 import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import type { Language } from "../app/page";
 
 gsap.registerPlugin(useGSAP);
 
-export default function HeroSection() {
+type HeroSectionProps = {
+  lang: Language;
+};
+
+export default function HeroSection({ lang }: HeroSectionProps) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const titleRef = useRef<HTMLHeadingElement | null>(null);
 
   useGSAP(
     () => {
       const titleText =
-        "here’s a small preview\nglimpse of our work.\nwhat’s coming next is";
+        lang === "ar"
+          ? "هذه لمحة صغيرة\nمن أعمالنا.\nوما هو قادم سيكون"
+          : "here’s a small preview\nglimpse of our work.\nwhat’s coming next is";
 
-      const circle = document.querySelector(".hero-circle-path") as SVGCircleElement | null;
+      const circle = document.querySelector(
+        ".hero-circle-path"
+      ) as SVGCircleElement | null;
 
       if (titleRef.current) {
         titleRef.current.textContent = "";
@@ -81,7 +90,7 @@ export default function HeroSection() {
         "-=0.2"
       );
     },
-    { scope: sectionRef }
+    { scope: sectionRef, dependencies: [lang] }
   );
 
   return (
@@ -113,8 +122,17 @@ export default function HeroSection() {
             <span className="hero-lines h-1 w-[30px] rounded-full bg-[var(--accent)]"></span>
 
             <h2 className="hero-subtitle text-[34px] font-bold text-white sm:text-[46px] md:text-[56px] lg:text-[64px] xl:text-[70px]">
-              <span className="text-[var(--accent)]">even</span>{" "}
-              <span className="text-white">better</span>
+              {lang === "ar" ? (
+                <>
+                  <span className="text-[var(--accent)]">أفضل</span>{" "}
+                  <span className="text-white">بكثير</span>
+                </>
+              ) : (
+                <>
+                  <span className="text-[var(--accent)]">even</span>{" "}
+                  <span className="text-white">better</span>
+                </>
+              )}
             </h2>
 
             <span className="hero-lines h-1 w-[30px] rounded-full bg-[var(--accent)]"></span>

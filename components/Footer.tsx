@@ -4,7 +4,13 @@ import Link from "next/link";
 import { Instagram, Linkedin } from "lucide-react";
 import { useEffect, useState } from "react";
 
-export default function Footer() {
+export type Language = "en" | "ar";
+
+type FooterProps = {
+  lang?: Language;
+};
+
+export default function Footer({ lang = "en" }: FooterProps) {
   const [instagramLink, setInstagramLink] = useState("https://instagram.com");
   const [linkedinLink, setLinkedinLink] = useState("https://linkedin.com");
 
@@ -37,59 +43,63 @@ export default function Footer() {
         <div className="mx-auto max-w-[1100px]">
           <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
             <div>
-              <h3 className="mb-5 text-base font-medium">sitemap</h3>
+              <h3 className="mb-5 text-base font-medium">
+                {lang === "ar" ? "خريطة الموقع" : "sitemap"}
+              </h3>
               <ul className="space-y-2 text-[15px]">
                 <li>
                   <Link href="/about" className="hover:underline">
-                    about us
+                    {lang === "ar" ? "من نحن" : "about us"}
                   </Link>
                 </li>
                 <li>
                   <Link href="/#work" className="hover:underline">
-                    our work
+                    {lang === "ar" ? "أعمالنا" : "our work"}
                   </Link>
                 </li>
                 <li>
                   <Link href="/#clients" className="hover:underline">
-                    our clients
+                    {lang === "ar" ? "عملاؤنا" : "our clients"}
                   </Link>
                 </li>
                 <li>
                   <Link href="/#team" className="hover:underline">
-                    our team
+                    {lang === "ar" ? "فريقنا" : "our team"}
                   </Link>
                 </li>
                 <li>
                   <Link href="/#contact" className="hover:underline">
-                    contact us
+                    {lang === "ar" ? "اتصل بنا" : "contact us"}
                   </Link>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h3 className="mb-5 text-base font-medium">offices</h3>
+              <h3 className="mb-5 text-base font-medium">
+                {lang === "ar" ? "المكاتب" : "offices"}
+              </h3>
               <ul className="space-y-2 text-[15px]">
-                <li>dubai, UAE</li>
-                <li>beirut, LEBANON</li>
-                <li>paris, FRANCE</li>
-                <li>cairo, EGYPT</li>
-                <li>riyadh, KSA</li>
+                <li>{lang === "ar" ? "دبي، الإمارات" : "dubai, UAE"}</li>
+                <li>{lang === "ar" ? "بيروت، لبنان" : "beirut, LEBANON"}</li>
+                <li>{lang === "ar" ? "باريس، فرنسا" : "paris, FRANCE"}</li>
+                <li>{lang === "ar" ? "القاهرة، مصر" : "cairo, EGYPT"}</li>
+                <li>{lang === "ar" ? "الرياض، السعودية" : "riyadh, KSA"}</li>
               </ul>
             </div>
 
             <div>
-              <h3 className="mb-5 text-base font-medium">inquiries</h3>
-              <p className="text-[15px] font-medium">
-                hello@vibestudio.com
-              </p>
+              <h3 className="mb-5 text-base font-medium">
+                {lang === "ar" ? "الاستفسارات" : "inquiries"}
+              </h3>
+              <p className="text-[15px] font-medium">hello@vibestudio.com</p>
             </div>
           </div>
 
           <div className="mt-14 flex flex-col items-center justify-between md:flex-row">
             <div className="mb-6 flex items-center gap-6 md:mb-0">
               <Link href="/" className="text-3xl font-bold hover:opacity-90">
-                vibe studio
+                {lang === "ar" ? "فايب ستوديو" : "vibe studio"}
               </Link>
 
               <div className="h-5 w-px bg-white"></div>
@@ -114,9 +124,11 @@ export default function Footer() {
             </div>
 
             <div className="flex items-center gap-4 text-[13px]">
-              <span>privacy policy</span>
+              <span>{lang === "ar" ? "سياسة الخصوصية" : "privacy policy"}</span>
               <span>|</span>
-              <span>terms & conditions</span>
+              <span>
+                {lang === "ar" ? "الشروط والأحكام" : "terms & conditions"}
+              </span>
             </div>
           </div>
         </div>

@@ -16,7 +16,11 @@ type SnowDot = {
   drift: number;
 };
 
-export default function Logo() {
+type LogoProps = {
+  lang?: "en" | "ar";
+};
+
+export default function Logo({ lang = "en" }: LogoProps) {
   const snowRef = useRef<HTMLDivElement | null>(null);
   const animationRef = useRef<gsap.core.Tween[] | null>(null);
   const [dots, setDots] = useState<SnowDot[]>([]);
@@ -30,6 +34,7 @@ export default function Logo() {
       duration: 1.8 + Math.random() * 1.8,
       drift: -8 + Math.random() * 16,
     }));
+
     setDots(generatedDots);
   }, []);
 
@@ -63,6 +68,7 @@ export default function Logo() {
         y: -20,
         x: 0,
       });
+
       const tween = gsap.to(particle, {
         y: 110,
         x: dot.drift,
@@ -77,8 +83,10 @@ export default function Logo() {
           { opacity: 0, duration: 0.2 },
         ],
       });
+
       tweens.push(tween);
     });
+
     animationRef.current = tweens;
   };
 
@@ -90,6 +98,7 @@ export default function Logo() {
     if (animationRef.current) {
       animationRef.current.forEach((tween) => tween.kill());
     }
+
     gsap.to(particles, {
       opacity: 0,
       duration: 0.2,
@@ -118,9 +127,19 @@ export default function Logo() {
             />
           ))}
         </div>
+
         <div className="relative z-10 text-center leading-tight">
-          <p className="text-xl font-bold text-white">vibe</p>
-          <p className="text-xl font-bold text-white">studio</p>
+          {lang === "ar" ? (
+            <>
+              <p className="text-lg font-bold text-white">فايب</p>
+              <p className="text-lg font-bold text-white">ستوديو</p>
+            </>
+          ) : (
+            <>
+              <p className="text-xl font-bold text-white">vibe</p>
+              <p className="text-xl font-bold text-white">studio</p>
+            </>
+          )}
         </div>
       </div>
     </Link>

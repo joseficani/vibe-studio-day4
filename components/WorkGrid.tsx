@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import type { Language } from "../app/page";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -15,7 +16,11 @@ type Project = {
   description: string;
 };
 
-export default function WorkGrid() {
+type WorkGridProps = {
+  lang: Language;
+};
+
+export default function WorkGrid({ lang }: WorkGridProps) {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -92,10 +97,14 @@ export default function WorkGrid() {
             <div className="relative">
               <input
                 type="text"
-                placeholder="Search projects..."
+                placeholder={
+                  lang === "ar" ? "ابحث عن المشاريع..." : "Search projects..."
+                }
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full rounded-md border border-white/20 bg-transparent px-5 py-4 pr-14 text-white outline-none placeholder:text-white/50 focus:border-cyan-400"
+                className={`w-full rounded-md border border-white/20 bg-transparent px-5 py-4 pr-14 text-white outline-none placeholder:text-white/50 focus:border-cyan-400 ${
+                  lang === "ar" ? "text-right" : "text-left"
+                }`}
               />
 
               {search && (
@@ -149,7 +158,7 @@ export default function WorkGrid() {
               ))
             ) : (
               <p className="col-span-full text-center text-[18px] text-white/70">
-                No projects found.
+                {lang === "ar" ? "لم يتم العثور على مشاريع." : "No projects found."}
               </p>
             )}
           </div>
@@ -163,10 +172,21 @@ export default function WorkGrid() {
               </div>
 
               <p className="text-[26px] text-white">
-                <span className="font-semibold text-red-400">we’d love</span> to
-                see your project
-                <br />
-                added here
+                {lang === "ar" ? (
+                  <>
+                    <span className="font-semibold text-red-400">يسعدنا</span> أن
+                    نرى مشروعك
+                    <br />
+                    مضافًا هنا
+                  </>
+                ) : (
+                  <>
+                    <span className="font-semibold text-red-400">we’d love</span> to
+                    see your project
+                    <br />
+                    added here
+                  </>
+                )}
               </p>
             </div>
           )}
